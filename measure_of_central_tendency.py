@@ -47,12 +47,12 @@ def median_grouped(class_intervals, freq):
             median_class_index = i
             break
     
-    L = class_intervals[median_class_index][0]
+    lower = class_intervals[median_class_index][0]
     f = freq[median_class_index]
     h = class_intervals[median_class_index][1] - class_intervals[median_class_index][0]
     cf_prev = 0 if median_class_index == 0 else cf[median_class_index - 1]
     
-    median = L + ((median_pos - cf_prev) / f) * h
+    median = lower + ((median_pos - cf_prev) / f) * h
     return median
 
 def mode_grouped(class_intervals, freq):
@@ -61,7 +61,7 @@ def mode_grouped(class_intervals, freq):
         if freq[i] > freq[m]:
             m = i
 
-    L = class_intervals[m][0]
+    lower = class_intervals[m][0]
     f1 = freq[m]
     f0 = 0 if m == 0 else freq[m - 1]
     f2 = 0 if m == len(freq) - 1 else freq[m + 1]
@@ -69,7 +69,7 @@ def mode_grouped(class_intervals, freq):
 
     if (f1 - f0 + f1 - f2) == 0:
         return "No mode"
-    mode = L + ((f1 - f0) / ((f1 - f0) + (f1 - f2))) * h
+    mode = lower + ((f1 - f0) / ((f1 - f0) + (f1 - f2))) * h
     return mode
 while True:
     try:
@@ -98,10 +98,10 @@ while True:
 
             print("Enter class intervals (lower upper) and frequency:")
             for i in range(n):
-                L = float(input(f"Class {i+1} lower limit: "))
-                U = float(input(f"Class {i+1} upper limit: "))
+                lower = float(input(f"Class {i+1} lower limit: "))
+                upper = float(input(f"Class {i+1} upper limit: "))
                 f = int(input("Frequency: "))
-                class_intervals.append([L, U])
+                class_intervals.append([lower, upper])
                 freq.append(f)
 
             # midpoints for mean
@@ -122,4 +122,3 @@ while True:
         print("Invalid input! Please enter numeric values.")
     except Exception as e:
         print("An error occurred:", e)
-
