@@ -113,7 +113,7 @@ while True:
             print("Mode =", mode_grouped(class_intervals, freq))
         
         elif choice == 3:
-            print("Exiting the program.")
+            print("Exiting...")
             break
 
         else:
@@ -122,3 +122,4 @@ while True:
         print("Invalid input! Please enter numeric values.")
     except Exception as e:
         print("An error occurred:", e)
+
