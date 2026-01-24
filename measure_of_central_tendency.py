@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 def mean_ungrouped(data):
     return sum(data) / len(data)
 
@@ -71,6 +73,66 @@ def mode_grouped(class_intervals, freq):
         return "No mode"
     mode = lower + ((f1 - f0) / ((f1 - f0) + (f1 - f2))) * h
     return mode
+
+def plot_ungrouped(data, mean, median, mode):
+    plt.figure(figsize=(10, 5))
+    
+    plt.subplot(1, 2, 1)
+    plt.bar(range(1, len(data) + 1), data, color='skyblue', edgecolor='black')
+    plt.axhline(y=mean, color='red', linestyle='--', label=f'Mean = {mean:.2f}')
+    plt.axhline(y=median, color='green', linestyle='-.', label=f'Median = {median:.2f}')
+    plt.xlabel('Data Point')
+    plt.ylabel('Value')
+    plt.title('Ungrouped Data - Bar Chart')
+    plt.legend()
+    
+    plt.subplot(1, 2, 2)
+    plt.hist(data, bins='auto', color='lightgreen', edgecolor='black')
+    plt.axvline(x=mean, color='red', linestyle='--', label=f'Mean = {mean:.2f}')
+    plt.axvline(x=median, color='green', linestyle='-.', label=f'Median = {median:.2f}')
+    plt.xlabel('Value')
+    plt.ylabel('Frequency')
+    plt.title('Ungrouped Data - Histogram')
+    plt.legend()
+    
+    plt.tight_layout()
+    plt.show()
+
+def plot_grouped(class_intervals, freq, mean, median, mode):
+    plt.figure(figsize=(12, 5))
+    
+    labels = [f'{int(ci[0])}-{int(ci[1])}' for ci in class_intervals]
+    x_pos = range(len(labels))
+    
+    plt.subplot(1, 2, 1)
+    plt.bar(x_pos, freq, color='coral', edgecolor='black')
+    plt.xticks(x_pos, labels, rotation=45)
+    plt.xlabel('Class Intervals')
+    plt.ylabel('Frequency')
+    plt.title('Grouped Data - Frequency Bar Chart')
+    
+    plt.subplot(1, 2, 2)
+    midpoints = [(ci[0] + ci[1]) / 2 for ci in class_intervals]
+    widths = [ci[1] - ci[0] for ci in class_intervals]
+    
+    plt.bar(midpoints, freq, width=widths[0], color='lightblue', edgecolor='black', alpha=0.7)
+    plt.plot(midpoints, freq, 'ro-', label='Frequency Polygon')
+    
+    if isinstance(mean, (int, float)):
+        plt.axvline(x=mean, color='red', linestyle='--', label=f'Mean = {mean:.2f}')
+    if isinstance(median, (int, float)):
+        plt.axvline(x=median, color='green', linestyle='-.', label=f'Median = {median:.2f}')
+    if isinstance(mode, (int, float)):
+        plt.axvline(x=mode, color='blue', linestyle=':', label=f'Mode = {mode:.2f}')
+    
+    plt.xlabel('Class Midpoints')
+    plt.ylabel('Frequency')
+    plt.title('Grouped Data - Histogram with Frequency Polygon')
+    plt.legend()
+    
+    plt.tight_layout()
+    plt.show()
+
 while True:
     try:
         print("---Choose Data Type:---")
@@ -86,9 +148,14 @@ while True:
                 data.append(float(input(f"Enter value x{i+1}: ")))
 
             print("\n--- (Ungrouped Data) ---")
-            print("Mean =", mean_ungrouped(data))
-            print("Median =", median_ungrouped(data))
-            print("Mode =", mode_ungrouped(data))
+            mean_val = mean_ungrouped(data)
+            median_val = median_ungrouped(data)
+            mode_val = mode_ungrouped(data)
+            print("Mean =", mean_val)
+            print("Median =", median_val)
+            print("Mode =", mode_val)
+            
+            plot_ungrouped(data, mean_val, median_val, mode_val)
 
         elif choice == 2:
             n = int(input("Enter number of classes: "))
@@ -104,13 +171,17 @@ while True:
                 class_intervals.append([lower, upper])
                 freq.append(f)
 
-            # midpoints for mean
             mid = [(x[0] + x[1]) / 2 for x in class_intervals]
 
             print("\n--- (Grouped Data) ---")
-            print("Mean =", mean_grouped(freq, mid))
-            print("Median =", median_grouped(class_intervals, freq))
-            print("Mode =", mode_grouped(class_intervals, freq))
+            mean_val = mean_grouped(freq, mid)
+            median_val = median_grouped(class_intervals, freq)
+            mode_val = mode_grouped(class_intervals, freq)
+            print("Mean =", mean_val)
+            print("Median =", median_val)
+            print("Mode =", mode_val)
+            
+            plot_grouped(class_intervals, freq, mean_val, median_val, mode_val)
         
         elif choice == 3:
             print("Exiting...")
