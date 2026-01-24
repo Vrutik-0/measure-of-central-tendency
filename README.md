@@ -42,6 +42,7 @@ This is a simple **terminal-based Python program** that calculates the **Mean, M
   * Mean using midpoints
   * Median using cumulative frequency
   * Mode using the modal class formula
+  * Used Matplotlib lib for Data Distn Visualization
 
 ---
 
